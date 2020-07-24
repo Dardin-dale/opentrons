@@ -244,3 +244,61 @@ describe('disposal volume should update...', () => {
     })
   })
 })
+
+describe('air gap volume', () => {
+  describe('when the path is single', () => {
+    let form
+    beforeEach(() => {
+      form = {
+        path: 'single',
+        aspirate_wells: ['A1'],
+        dispense_wells: ['B2'],
+        volume: '2',
+        pipette: 'pipetteId',
+        disposalVolume_checkbox: true,
+        disposalVolume_volume: '1.1',
+      }
+    })
+
+    it('should update when the patch volume is less than the min pipette volume', () => {
+      const result = handleFormHelper({ aspirate_airGap_volume: '0.5' }, form)
+      expect(result.aspirate_airGap_volume).toEqual('1')
+    })
+    it('should NOT update when the patch volume is greater than the min pipette volume', () => {
+      const result = handleFormHelper({ aspirate_airGap_volume: '2' }, form)
+      expect(result.aspirate_airGap_volume).toEqual('2')
+    })
+    it('should NOT update when the patch volume is equal to the min pipette volume', () => {
+      const result = handleFormHelper({ aspirate_airGap_volume: '1' }, form)
+      expect(result.aspirate_airGap_volume).toEqual('1')
+    })
+  })
+
+  describe('when the path is multiAspirate', () => {
+    let form
+    beforeEach(() => {
+      form = {
+        path: 'multiAspirate',
+        aspirate_wells: ['A1', 'B1'],
+        dispense_wells: ['B2'],
+        volume: '2',
+        pipette: 'pipetteId',
+        disposalVolume_checkbox: true,
+        disposalVolume_volume: '1.1',
+      }
+    })
+
+    it('should update when the patch volume is less than the min pipette volume', () => {
+      const result = handleFormHelper({ aspirate_airGap_volume: '0.5' }, form)
+      expect(result.aspirate_airGap_volume).toEqual('1')
+    })
+    it('should NOT update when the patch volume is greater than the min pipette volume', () => {
+      const result = handleFormHelper({ aspirate_airGap_volume: '2' }, form)
+      expect(result.aspirate_airGap_volume).toEqual('2')
+    })
+    it('should NOT update when the patch volume is equal to the min pipette volume', () => {
+      const result = handleFormHelper({ aspirate_airGap_volume: '1' }, form)
+      expect(result.aspirate_airGap_volume).toEqual('1')
+    })
+  })
+})
