@@ -5,6 +5,7 @@ import last from 'lodash/last'
 import { Icon, PrimaryButton, type Mount } from '@opentrons/components'
 import * as RobotApi from '../../robot-api'
 import * as Sessions from '../../sessions'
+import { getUseTrashSurfaceForTipCal } from '../../config'
 
 import { CalibrateTipLength } from '../../components/CalibrateTipLength'
 import { ToolSettingAlertModal } from '../../components/CalibrateTipLength/ToolSettingAlertModal'
@@ -34,8 +35,9 @@ export function CalibrateTipLengthControl({
   const [showCalBlockPrompt, setShowCalBlockPrompt] = React.useState(false)
   const [dispatch, requestIds] = RobotApi.useDispatchApiRequest()
 
+  const useTrashSurfaceForTipCal = useSelector(getUseTrashSurfaceForTipCal)
   //  TODO: store saved cal block preference in app config and grab value
-  const hasCalBlock = React.useRef<boolean | null>(null)
+  const hasCalBlock = React.useRef<boolean | null>(useTrashSurfaceForTipCal)
 
   const requestState = useSelector((state: State) => {
     const reqId = last(requestIds) ?? null
